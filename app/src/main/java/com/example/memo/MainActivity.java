@@ -15,7 +15,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
 implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
 
-    String[] aMemo ={"1. click to edit","2. long click to clear","3. ","4. ","5. ","6. "};
+    String[] aMemo ={"1. click to edit","2. long click to clear","3. ","4. ","5. ","6. ","7. "};
     ListView lv;
     ArrayAdapter<String> aa;
 
@@ -37,13 +37,25 @@ implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener {
         Intent it = new Intent(this,edit.class);
         it.putExtra("No.",pos+1);
         it.putExtra("context",aMemo[pos]);
-        startActivity(it);
+        startActivityForResult(it,pos);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> a, View v, int pos, long id) {
         aMemo[pos] =(pos+1)+".";
-        aa.notifyDataSetChanged();
+        aa.notifyDataSetChanged();//update context
         return false;
+    }
+
+
+    protected void onActivityResult(int requestCode,int resultCode,Intent it)
+    {
+        if(resultCode == RESULT_OK){
+            aMemo[requestCode] = it.getStringExtra("context");
+            aa.notifyDataSetChanged();
+        }
+
+
+
     }
 }
